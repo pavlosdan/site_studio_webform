@@ -1,0 +1,22 @@
+<?php
+
+/**
+ * @file
+ * Provides Site Studio Webform element.
+ */
+
+/**
+ * Implements hook_theme().
+ */
+function site_studio_webform_theme($existing, $type, $theme, $path) {
+  return [
+    'site_studio_webform_node_element_template' => [
+      'variables' => [
+        'elementSettings' => NULL,
+        'elementMarkup' => NULL,
+        'elementClass' => NULL,
+        'webform' => NULL,
+      ],
+    ],
+  ];
+}

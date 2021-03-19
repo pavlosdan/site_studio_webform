@@ -1,0 +1,8 @@
+name: Site Studio Webform
+type: module
+description: Provides integration between Site Studio and Webform modules.
+package: Site Studio
+core_version_requirement: ^8.9 || ^9
+dependencies:
+  - cohesion:cohesion
+  - webform:webform_node
