@@ -1,1 +1,2 @@
-- config/dx8/cohesion_component_webform.package.yml
+- cohesion_component_webform.package.yml
+- cohesion_component_webform_node.package.yml

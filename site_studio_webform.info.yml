@@ -5,4 +5,4 @@ package: Site Studio
 core_version_requirement: ^8.9 || ^9
 dependencies:
   - cohesion:cohesion
-  - webform:webform_node
+  - webform:webform

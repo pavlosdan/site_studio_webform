@@ -10,25 +10,25 @@ use Drupal\cohesion_elements\CustomElementPluginBase;
  * @package Drupal\site_studio_webform\Plugin\CustomElement
  *
  * @CustomElement(
- *   id = "site_studio_webform_node_element",
- *   label = @Translation("Webform Node Element")
+ *   id = "site_studio_webform_element",
+ *   label = @Translation("Webform Element")
  * )
  */
-class WebformNodeElement extends CustomElementPluginBase {
+class WebformElement extends CustomElementPluginBase {
 
   /**
    * {@inheritdoc}
    */
   public function getFields() {
-    $moduleHandler = \Drupal::service('module_handler');
-    if (!$moduleHandler->moduleExists('webform_node')) {
-      return [];
-    }
+    $options = \Drupal::entityQuery('webform')
+      ->execute();
+
     return [
-      'webform_node_id' => [
+      'webform_id' => [
         'title' => 'Webform node ID',
-        'type' => 'textfield',
-        'placeholder' => 'e.g. 256',
+        'type' => 'select',
+        'nullOption' => FALSE,
+        'options' => $options,
         'required' => TRUE,
         'validationMessage' => 'This field is required.',
       ],
@@ -39,13 +39,18 @@ class WebformNodeElement extends CustomElementPluginBase {
    * {@inheritdoc}
    */
   public function render($element_settings, $element_markup, $element_class) {
+    if (empty($element_settings['webform_id'])) {
+      return;
+    }
     // Load the webform node.
-    $webform_node = \Drupal::entityTypeManager()
-      ->getStorage($element_settings['webform_node_id']['entity']['#entityType'])
-      ->load($element_settings['webform_node_id']['entity']['#entityId']);
+    $webform = \Drupal::entityTypeManager()
+      ->getStorage('webform')
+      ->load($element_settings['webform_id']);
 
     // Get the webform field from the node and prepare for display.
-    $webform = $webform_node->webform->view('full');
+    $webform_render = \Drupal::entityTypeManager()
+      ->getViewBuilder('webform')
+      ->view($webform);
 
     // Render the element.
     return [
@@ -53,7 +58,7 @@ class WebformNodeElement extends CustomElementPluginBase {
       '#elementSettings' => $element_settings,
       '#elementMarkup' => $element_markup,
       '#elementClass' => $element_class,
-      '#webform' => $webform,
+      '#webform' => $webform_render,
     ];
   }
 
