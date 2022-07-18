@@ -39,6 +39,7 @@ class WebformElement extends CustomElementPluginBase {
    * {@inheritdoc}
    */
   public function render($element_settings, $element_markup, $element_class) {
+    $webform_render = [];
     if (empty($element_settings['webform_id'])) {
       return;
     }
@@ -48,9 +49,11 @@ class WebformElement extends CustomElementPluginBase {
       ->load($element_settings['webform_id']);
 
     // Get the webform field from the node and prepare for display.
-    $webform_render = \Drupal::entityTypeManager()
-      ->getViewBuilder('webform')
-      ->view($webform);
+    if (!empty($webform)) {
+      $webform_render = \Drupal::entityTypeManager()
+        ->getViewBuilder('webform')
+        ->view($webform);
+    }
 
     // Render the element.
     return [
